@@ -5,14 +5,15 @@ on:
       - main
       - dev
 env:
-  MONGODB_DB_NAME: ghtest     
+  MONGODB_DB_NAME: ${{secrets.MONGODB_DB_NAME}}
 jobs:
   test:
+   environment: dev
    env:
-     PORT: 8080
-     MONGODB_CLUSTER_ADDRESS : satyacluster.ul218je.mongodb.net
-     MONGODB_USERNAME : satya123
-     MONGODB_PASSWORD : GyVfUBR6b2RnhKsE
+      PORT: 8080
+      MONGODB_CLUSTER_ADDRESS : ${{secrets.MONGODB_CLUSTER_ADDRESS}}
+      MONGODB_USERNAME : ${{secrets.MONGODB_USERNAME}}
+      MONGODB_PASSWORD : ${{secrets.MONGODB_PASSWORD}}
    runs-on: ubuntu-latest
    steps:
       - name: Get Code
@@ -30,12 +31,12 @@ jobs:
         run: npm test
       - name: Output information
         run: | 
-          echo "MONGODB_USERNAME: ${{env.MONGODB_USERNAME}}"
+          echo "MONGODB_USERNAME: ${{secrets.MONGODB_USERNAME}}"
   deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Output information
         run: |  
-         echo "MONGODB_CLUSTER_ADDRESS : ${{env.MONGODB_CLUSTER_ADDRESS}}"
-         echo "MONGODB_DB_NAME : ${{env.MONGODB_DB_NAME}}"
+         echo "MONGODB_CLUSTER_ADDRESS : ${{secrets.MONGODB_CLUSTER_ADDRESS}}"
+         echo "MONGODB_DB_NAME : ${{secrets.MONGODB_DB_NAME}}"
