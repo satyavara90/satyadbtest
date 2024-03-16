@@ -33,6 +33,7 @@ jobs:
         run: | 
           echo "MONGODB_USERNAME: ${{secrets.MONGODB_USERNAME}}"
   deploy:
+    environment: dev
     needs: test
     runs-on: ubuntu-latest
     steps:
