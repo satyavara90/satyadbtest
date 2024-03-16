@@ -1,0 +1,40 @@
+name: Deployment
+on:
+  push:
+    branches:
+      - main
+      - dev
+env:
+  MONGODB_DB_NAME: ghtest     
+jobs:
+  test:
+   env:
+     PORT: 8080
+     MONGODB_CLUSTER_ADDRESS : satyacluster.ul218je.mongodb.net
+     MONGODB_USERNAME : satya123
+     MONGODB_PASSWORD : GyVfUBR6b2RnhKsE
+   runs-on: ubuntu-latest
+   steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-deps-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Run server
+        run: npm start & npx wait-on http://127.0.0.1:$PORT
+      - name: Run tests
+        run: npm test
+      - name: Output information
+        run: echo "mogodbusrname:{{env.MONGODB_USERNAME}}"
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        run: |  
+         echo "mogodbusrname:{{env.MONGODB_CLUSTER_ADDRESS}}"
+         echo "mogodbusrname:{{env.MONGODB_DB_NAME}}"
