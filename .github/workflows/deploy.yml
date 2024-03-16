@@ -29,12 +29,12 @@ jobs:
       - name: Run tests
         run: npm test
       - name: Output information
-        run: echo "mogodbusrname:{{env.MONGODB_USERNAME}}"
+        run: echo "mogodbusrname:{{env.MONGODB_PASSWORD}}"
   deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Output information
         run: |  
-         echo "mogodbusrname:{{env.MONGODB_CLUSTER_ADDRESS}}"
-         echo "mogodbusrname:{{env.MONGODB_DB_NAME}}"
+         echo "MONGODB_CLUSTER_ADDRESS : {{env.MONGODB_CLUSTER_ADDRESS}}"
+         echo "MONGODB_DB_NAME : {{env.MONGODB_DB_NAME}}"
